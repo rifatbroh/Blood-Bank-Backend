@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-0$ij#(&4cd_&1ojqsrpq(+v2fj^m@9+ed-at%w&u&e_g!t@^87
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = ['blood-bank-backend-c7w8.onrender.com', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
