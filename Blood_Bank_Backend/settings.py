@@ -24,9 +24,14 @@ SECRET_KEY = 'django-insecure-0$ij#(&4cd_&1ojqsrpq(+v2fj^m@9+ed-at%w&u&e_g!t@^87
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['http://blood-bank-backend-c7w8.onrender.com/','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [
+    'https://blood-bank-backend-c7w8.onrender.com',
+    'http://blood-bank-backend-c7w8.onrender.com',
+    'http://127.0.0.1:8000',
+    'https://127.0.0.1:8000',
+]
 
 # Application definition
 
@@ -50,6 +55,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,9 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
+
 
 
 ROOT_URLCONF = 'Blood_Bank_Backend.urls'
