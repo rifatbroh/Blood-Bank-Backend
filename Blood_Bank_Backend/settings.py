@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0$ij#(&4cd_&1ojqsrpq(+v2fj^m@9+ed-at%w&u&e_g!t@^87
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-# CSRF_TRUSTED_ORIGINS = ['https://mamar-bank.onrender.com','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://blood-bank-backend-c7w8.onrender.com/','https://*.127.0.0.1']
 
 # Application definition
 
