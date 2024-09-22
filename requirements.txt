@@ -203,3 +203,4 @@ XlsxWriter
 xlwt
 yarg
 zipp
+cloudinary
