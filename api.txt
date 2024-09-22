@@ -1,0 +1,23 @@
+
+Authentication:
+---------------
+Registraion: http://127.0.0.1:8000/accounts/register/
+login: http://127.0.0.1:8000/accounts/login/
+logout: http://127.0.0.1:8000/accounts/logout/
+profile: http://127.0.0.1:8000/accounts/profile/  
+
+Donation Releted APi:
+--------------------
+"notifications": "http://127.0.0.1:8000/events/notifications/"
+"donation-events": "http://127.0.0.1:8000/events/donation-events/"
+"donation-history": "http://127.0.0.1:8000/events/donation-history/"
+"dashboard": "http://127.0.0.1:8000/events/dashboard/"
+"recipient_requests": "http://127.0.0.1:8000/events/dashboard/recipient_requests/"
+"donation_history": "http://127.0.0.1:8000/events/dashboard/donation_history/"
+"event filter by blood group": http://127.0.0.1:8000/events/donation-event-filter/?blood_group=A%2B
+
+Blood Bank Releted APi:
+"about-us": "http://127.0.0.1:8000/blood_bank_releted/about-us/"
+"contact": "http://127.0.0.1:8000/blood_bank_releted/contact/"
+"blog": "http://127.0.0.1:8000/blood_bank_releted/blog/"
+"feedback": "http://127.0.0.1:8000/blood_bank_releted/feedback/"
