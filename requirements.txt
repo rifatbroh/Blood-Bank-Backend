@@ -204,3 +204,4 @@ xlwt
 yarg
 zipp
 cloudinary
+django-cloudinary-storage
