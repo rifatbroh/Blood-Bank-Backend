@@ -9,3 +9,16 @@ OFFENSIVE_WORDS = [
     "shameless", "vile", "rotten", "silly",
     "pest", "moron", "disgrace", "miscreant"
 ]
+STAR_CHOICES = [
+        ('⭐', '⭐'),
+        ('⭐⭐', '⭐⭐'),
+        ('⭐⭐⭐', '⭐⭐⭐'),
+        ('⭐⭐⭐⭐', '⭐⭐⭐⭐'),
+        ('⭐⭐⭐⭐⭐', '⭐⭐⭐⭐⭐')
+    ]
+
+EVENT_CHOICES = [
+        ('blood_donation', 'Blood Donation'),
+        ('blood_receiving', 'Blood Receiving')
+       
+    ]

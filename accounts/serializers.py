@@ -69,23 +69,46 @@ class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(required = True)
     password = serializers.CharField(required = True)
 
-
-
 class DonorProfileSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.get_full_name', read_only=True)
-    
+    username=serializers.CharField(source='user.username', required=False)
+    first_name = serializers.CharField(source='user.first_name', required=False)
+    last_name = serializers.CharField(source='user.last_name', required=False)
+    email = serializers.EmailField(source='user.email', required=False)
+
     class Meta:
         model = DonorProfile
-        fields = ['id','user', 'name', 'age', 'mobaile_no', 'address', 'image', 'blood_group', 'blood_donation_count', 'is_available', 'health_screening_passed']
-        
-        # Corrected the extra_kwargs structure
+        fields = [
+            'id', 'user', 'first_name','username', 'last_name', 'email',
+            'age', 'mobaile_no', 'address', 'image', 'blood_group',
+            'is_available', 'health_screening_passed'
+        ]
         extra_kwargs = {
             'user': {'read_only': True},
-           
-          
             'health_screening_passed': {'read_only': True},
-            'mobaile_no': {'read_only': True},
-            'age': {'read_only': True},
-            'address': {'read_only': True},
-            'blood_donation_count': {'read_only': True},
+            'is_available': {'read_only': True},
+            'mobaile_no': {'read_only': False},
+            'age': {'read_only': False},
+            'blood_group': {'read_only': False},
+            'username': {'read_only': True},
         }
+
+    def update(self, instance, validated_data):
+        # Handle the nested user object updates (first_name, last_name, email)
+        user_data = validated_data.pop('user', {})
+        user = instance.user
+
+        # Update only if provided in the request
+        user.first_name = user_data.get('first_name', user.first_name)
+        user.last_name = user_data.get('last_name', user.last_name)
+        user.email = user_data.get('email', user.email)
+        user.save()
+
+        # Update the DonorProfile fields
+        instance.age = validated_data.get('age', instance.age)
+        instance.mobaile_no = validated_data.get('mobaile_no', instance.mobaile_no)
+        instance.address = validated_data.get('address', instance.address)
+        instance.image = validated_data.get('image', instance.image)
+        instance.blood_group = validated_data.get('blood_group', instance.blood_group)
+        instance.save()
+
+        return instance

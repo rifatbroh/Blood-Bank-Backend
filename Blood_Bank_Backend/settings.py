@@ -32,6 +32,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://blood-bank-backend-c7w8.onrender.com',
     'http://127.0.0.1:8000',
     'https://127.0.0.1:8000',
+    'http://127.0.0.1:5500',
+    'https://127.0.0.1:5500',
 ]
 
 # Application definition
@@ -136,17 +138,21 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
-
-
+# MEDIA_ROOT = BASE_DIR / 'media/blood_bank_releted/images'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        
     ],
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    # Other settings...
+    
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+        'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # Pagination class
+   
 }
 
 # Default primary key field type

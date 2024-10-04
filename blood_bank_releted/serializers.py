@@ -3,8 +3,8 @@ from .models import AboutUs
 
 from rest_framework import serializers
 from .models import Contact
-from .models import BlogPost
-from .models import Feedback
+# from .models import BlogPost
+from .models import Feedback,DonorBlogPost
 
 
 
@@ -26,11 +26,16 @@ class ContactSerializer(serializers.ModelSerializer):
 
 
 class BlogPostSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source='author.get_full_name', read_only=True)  # Corrected spelling to 'donor'
+
     class Meta:
-        model = BlogPost
-        fields = ['id', 'title', 'content', 'author', 'created_at', 'updated_at']
+        model = DonorBlogPost
+        fields = ['id', 'title','image', 'content', 'author', 'created_at', 'updated_at']
+
 
 class FeedbackSerializer(serializers.ModelSerializer):
+    donor = serializers.CharField(source='donor.get_full_name', read_only=True)  # Corrected spelling to 'donor'
+
     class Meta:
         model = Feedback
-        fields = ['id', 'donor', 'feedback', 'response', 'created_at']
+        fields = ['id', 'donor', 'feedback', 'rating', 'created_at']  # Use 'donor' in fields as well

@@ -20,13 +20,13 @@ class DonorRegistrationModel(models.Model):
 
 class DonorProfile(models.Model):
      user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
-     name = models.CharField(max_length=255)
+    
      age = models.PositiveIntegerField(max_length=3)
-     # image = CloudinaryField('Product_images')
-     image=models.ImageField(upload_to="images")
+     image = models.ImageField(upload_to="accounts/media/images")
+
+     # image=models.ImageField(upload_to="images")
      address = models.TextField()
      mobaile_no = models.PositiveIntegerField(max_length=12)
-     blood_donation_count = models.PositiveIntegerField(default=0)
      blood_group = models.CharField(max_length=3)
      is_available = models.BooleanField(default=True)
      health_screening_passed = models.BooleanField(default=False)

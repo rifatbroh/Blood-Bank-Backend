@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.authtoken.models import Token
 from rest_framework.routers import DefaultRouter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from django.urls import path, include
 
 class UserRegistrationView(APIView):
@@ -96,9 +96,25 @@ class UserLogoutView(APIView):
 
 
 
+# class DonorProfileView(viewsets.ModelViewSet):
+#     serializer_class = DonorProfileSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return DonorProfile.objects.filter(user=self.request.user)
+    
+
 class DonorProfileView(viewsets.ModelViewSet):
     serializer_class = DonorProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return DonorProfile.objects.filter(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)  # Allow partial updates
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
