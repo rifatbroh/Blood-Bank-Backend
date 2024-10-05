@@ -50,3 +50,12 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f'Feedback by {self.donor.username}'
+
+
+class Subscription(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Link to user
+    created_at = models.DateTimeField(auto_now_add=True)
+    email=models.EmailField()
+
+    def __str__(self):
+        return f"{self.user.username}'s Subscription"

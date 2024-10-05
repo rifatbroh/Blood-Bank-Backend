@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from .models import AboutUs, Contact, Feedback,DonorBlogPost
-from .serializers import AboutUsSerializer, ContactSerializer, FeedbackSerializer,BlogPostSerializer
+from .models import AboutUs, Contact, Feedback,DonorBlogPost,Subscription
+from .serializers import AboutUsSerializer, ContactSerializer, FeedbackSerializer,BlogPostSerializer,SubscriptionSerializer
 from events.models import DonationHistory,DonationEvent
 from rest_framework.response import Response
 from rest_framework import viewsets, status
@@ -114,3 +114,13 @@ class All_Feddback(viewsets.ModelViewSet):
         serializer=FeedbackSerializer(feedback,many=True)
         return Response({'all_feedback':serializer.data})
 
+
+
+class SubscriptionViewSet(viewsets.ModelViewSet):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Create subscription for the logged-in user
+        serializer.save(user=self.request.user)

@@ -4,7 +4,7 @@ from .models import AboutUs
 from rest_framework import serializers
 from .models import Contact
 # from .models import BlogPost
-from .models import Feedback,DonorBlogPost
+from .models import Feedback,DonorBlogPost,Subscription
 
 
 
@@ -39,3 +39,12 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = ['id', 'donor', 'feedback', 'rating', 'created_at']  # Use 'donor' in fields as well
+
+from rest_framework import serializers
+from .models import Subscription
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ['user', 'created_at']
+        read_only_fields = ['created_at']  # created_at should be read-only
