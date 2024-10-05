@@ -108,6 +108,7 @@ class DonorProfileView(viewsets.ModelViewSet):
     serializer_class = DonorProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    
     def get_queryset(self):
         return DonorProfile.objects.filter(user=self.request.user)
 
@@ -118,3 +119,5 @@ class DonorProfileView(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+

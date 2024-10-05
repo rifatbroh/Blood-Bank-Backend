@@ -175,14 +175,14 @@ import os
 # Set the CLOUDINARY_URL using the provided value
 # CLOUDINARY_URL = os.env('CLOUDINARY_URL', 'cloudinary://464615231665312:CGMQbVMG6UJOS7zSsY9AlOlX6S0@dnzqmx8nw?secure_distribution=mydomain.com&upload_prefix=myprefix.com')
 
-import cloudinary.uploader
-import cloudinary.api
-CLOUDINARY_URL='cloudinary://464615231665312:CGMQbVMG6UJOS7zSsY9AlOlX6S0@dnzqmx8nw'
-cloudinary.config(
-    cloud_name="dnzqmx8nw",
-    api_key="464615231665312",
-    api_secret="CGMQbVMG6UJOS7zSsY9AlOlX6S0"
-)
+# import cloudinary.uploader
+# import cloudinary.api
+# CLOUDINARY_URL='cloudinary://464615231665312:CGMQbVMG6UJOS7zSsY9AlOlX6S0@dnzqmx8nw'
+# cloudinary.config(
+#     cloud_name="dnzqmx8nw",
+#     api_key="464615231665312",
+#     api_secret="CGMQbVMG6UJOS7zSsY9AlOlX6S0"
+# )
 
 # CLOUDINARY_STORAGE = {
 #     'CLOUD_NAME': 'dnzqmx8nw',
@@ -190,4 +190,4 @@ cloudinary.config(
 #     'API_SECRET': 'CGMQbVMG6UJOS7zSsY9AlOlX6S0',
 # }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
