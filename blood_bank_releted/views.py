@@ -38,6 +38,8 @@ IMAGEBB_API_KEY = 'ca0a7f8e97446e4139d17010b039c2da'  # আপনার ImageBB 
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = DonorBlogPost.objects.all()
     serializer_class = BlogPostSerializer
+    pagination_class=DonationEventPagination
+
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
