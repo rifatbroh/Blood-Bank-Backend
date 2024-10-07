@@ -9,8 +9,8 @@ from events.models import DonationEvent
 
 class DonorRegistrationModel(models.Model):
      user = models.OneToOneField(User, on_delete=models.CASCADE)
-     age=models.PositiveIntegerField(max_length=3)
-     mobaile_no=models.CharField(max_length=12)
+     age=models.PositiveIntegerField()
+     mobaile_no=models.PositiveIntegerField()
      address=models.TextField()
      
 
@@ -21,12 +21,12 @@ class DonorRegistrationModel(models.Model):
 class DonorProfile(models.Model):
      user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
     
-     age = models.PositiveIntegerField(max_length=3)
+     age = models.PositiveIntegerField()
      image = models.ImageField(upload_to="accounts/media/images")
 
      # image=models.ImageField(upload_to="images")
      address = models.TextField()
-     mobaile_no = models.PositiveIntegerField(max_length=12)
+     mobaile_no = models.PositiveIntegerField()
      blood_group = models.CharField(max_length=3)
      is_available = models.BooleanField(default=True)
      health_screening_passed = models.BooleanField(default=False)

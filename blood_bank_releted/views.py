@@ -12,7 +12,7 @@ from events.views import  DonationEventPagination
 from datetime import timedelta
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+import requests
 
 class AboutUsViewSet(viewsets.ModelViewSet):
     queryset = AboutUs.objects.all()
@@ -32,44 +32,57 @@ class ContactViewSet(viewsets.ModelViewSet):
 
 
 
+IMAGEBB_API_URL = 'https://api.imgbb.com/1/upload'  # ImageBB API URL
+IMAGEBB_API_KEY = 'ca0a7f8e97446e4139d17010b039c2da'  # আপনার ImageBB API কী এখানে বসান
 
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = DonorBlogPost.objects.all()
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = DonationEventPagination
 
     def perform_create(self, serializer):
         user = self.request.user
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content')
+        image = self.request.FILES.get('image')  # ইমেজ ফাইলটি নিন
 
         # Check if title and content are empty
         if not title or not content:
-            raise ValidationError(
-                {"detail": "Title and content must be provided."}
-            )
+            raise ValidationError({"detail": "Title and content must be provided."})
 
-        # Check for offensive language
-        if any(word in title.lower() for word in OFFENSIVE_WORDS) or any(word in content.lower() for word in OFFENSIVE_WORDS):
-            raise ValidationError(
-                {"detail": "Offensive language is not allowed."}
-            )
+        # ইমেজ আপলোড করার জন্য ImageBB API কল করুন
+        if image:
+            try:
+                # ইমেজ আপলোড করতে API কল করুন
+                response = requests.post(
+                    IMAGEBB_API_URL,
+                    files={
+                        'image': image  # এখানে ইমেজ ফাইল পাঠান
+                    },
+                    data={
+                        'key': IMAGEBB_API_KEY
+                    },
+                    timeout=30  # 30 সেকেন্ডের টাইমআউট
+                )
 
-        # Check if the user has valid donation history for the specified event
-        has_valid_donation = DonationHistory.objects.filter(user=user).exists()
+                # API থেকে প্রাপ্ত উত্তর চেক করুন
+                if response.status_code == 200:
+                    image_url = response.json()['data']['url']  # ইমেজের URL পান
+                else:
+                    print(response.json())  # লগ করে দেখুন কি ভুল হচ্ছে
+                    raise ValidationError({"detail": "Image upload failed."})
+            except requests.exceptions.Timeout:
+                raise ValidationError({"detail": "Image upload timed out."})
+            except requests.exceptions.RequestException as e:
+                raise ValidationError({"detail": f"An error occurred: {str(e)}"})
+        else:
+            raise ValidationError({"detail": "Image must be provided."})
 
-        if not has_valid_donation:
-            raise ValidationError(
-                {"detail": "You must have a valid donation history to create a blog post."}
-            )
+        # ব্লগ পোস্ট তৈরি করুন
+        serializer.save(author=user, image=image_url)  # ইমেজ URL সহ ব্লগ পোস্ট সেভ করুন
 
-        # Save the blog post
-        serializer.save(author=user)
-
-        # Return a response with status 201
         return Response(
-            {"detail": "Blog post created successfully!"},
+            {"detail": "Blog post created successfully!", "image_url": image_url},
             status=status.HTTP_201_CREATED
         )
 
@@ -122,5 +135,11 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Create subscription for the logged-in user
+        user=self.request.user
+        # Directly create subscription for the logged-in user
+        subcription=Subscription.objects.filter(user=user).exists()
+        if subcription:
+            raise ValidationError("Your Subscription already exists")
+
         serializer.save(user=self.request.user)
+        return Response({"detail": "Thank you! for Subscription us"}, status=status.HTTP_201_CREATED)

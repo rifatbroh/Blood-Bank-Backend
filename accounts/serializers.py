@@ -69,8 +69,12 @@ class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(required = True)
     password = serializers.CharField(required = True)
 
+
+
+
+
 class DonorProfileSerializer(serializers.ModelSerializer):
-    username=serializers.CharField(source='user.username', required=False)
+    username = serializers.CharField(source='user.username', required=False, read_only=True)
     first_name = serializers.CharField(source='user.first_name', required=False)
     last_name = serializers.CharField(source='user.last_name', required=False)
     email = serializers.EmailField(source='user.email', required=False)
@@ -78,7 +82,7 @@ class DonorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = DonorProfile
         fields = [
-            'id', 'user', 'first_name','username', 'last_name', 'email',
+            'id', 'user', 'first_name', 'username', 'last_name', 'email',
             'age', 'mobaile_no', 'address', 'image', 'blood_group',
             'is_available', 'health_screening_passed'
         ]
@@ -93,17 +97,18 @@ class DonorProfileSerializer(serializers.ModelSerializer):
         }
 
     def update(self, instance, validated_data):
-        # Handle the nested user object updates (first_name, last_name, email)
+        # Nested user data update
         user_data = validated_data.pop('user', {})
+
+        # Update user fields
         user = instance.user
+        if user_data:  # Check if user_data is not empty
+            user.first_name = user_data.get('first_name', user.first_name)
+            user.last_name = user_data.get('last_name', user.last_name)
+            user.email = user_data.get('email', user.email)
+            user.save()
 
-        # Update only if provided in the request
-        user.first_name = user_data.get('first_name', user.first_name)
-        user.last_name = user_data.get('last_name', user.last_name)
-        user.email = user_data.get('email', user.email)
-        user.save()
-
-        # Update the DonorProfile fields
+        # Update DonorProfile fields
         instance.age = validated_data.get('age', instance.age)
         instance.mobaile_no = validated_data.get('mobaile_no', instance.mobaile_no)
         instance.address = validated_data.get('address', instance.address)

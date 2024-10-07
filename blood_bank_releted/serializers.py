@@ -46,5 +46,5 @@ from .models import Subscription
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
-        fields = ['user', 'created_at']
-        read_only_fields = ['created_at']  # created_at should be read-only
+        fields = ['user','email', 'created_at']
+        read_only_fields = ['created_at','user']  # created_at should be read-only
