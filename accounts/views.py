@@ -165,21 +165,21 @@ class DonorProfileView(viewsets.ModelViewSet):
     #         return None  # Or raise an exception/message
 
     # def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', True)  # Allow partial updates
-        instance = self.get_object()
-        image = request.FILES.get('image')
-        print(image,"image")
-        # Handle image upload
-        if image:
-            image_url = self.upload_image_to_imgbb(image)
-            print(image_url,"image_url")
-            if image_url:
-                request.data['image'] = image_url  # Use the URL returned by ImageBB
-                print(request.data['image'])
-            else:
-                return Response({"error": "Image upload failed."}, status=400)  # Return error response
+        # partial = kwargs.pop('partial', True)  # Allow partial updates
+        # instance = self.get_object()
+        # image = request.FILES.get('image')
+        # print(image,"image")
+        # # Handle image upload
+        # if image:
+        #     image_url = self.upload_image_to_imgbb(image)
+        #     print(image_url,"image_url")
+        #     if image_url:
+        #         request.data['image'] = image_url  # Use the URL returned by ImageBB
+        #         print(request.data['image'])
+        #     else:
+        #         return Response({"error": "Image upload failed."}, status=400)  # Return error response
 
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data)
+        # serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        # serializer.is_valid(raise_exception=True)
+        # self.perform_update(serializer)
+        # return Response(serializer.data)
