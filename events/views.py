@@ -192,7 +192,7 @@ class DonationEventViewSet(viewsets.ModelViewSet):
 # Viewset for DonationHistory
 class DonationHistoryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DonationHistorySerializer
-    # permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAuthenticated]
 
     
     def get_queryset(self):
@@ -237,20 +237,21 @@ class DashboardViewSet(viewsets.ModelViewSet):
     queryset = DonationEvent.objects.all()  # Default queryset
     serializer_class = DonationEventSerializer
     pagination_class=DonationEventPagination
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
 
 
 
     # Custom action for recipient requests
-    @action(detail=False, methods=['get'])
-    # @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticatedOrReadOnly])
     def recipient_requests(self, request):
-        events = DonationEvent.objects.all()
-        for event in events:
-            print(event.created_by)  # সবার জন্য তৈরি করা ইউজার প্রদর্শন করুন
+        if request.user.is_authenticated:
+         # যদি ইউজার অথেনটিকেটেড থাকে, তখন exclude(created_by=request.user) ফিল্টার প্রয়োগ করবে
+            recipient_requests = DonationEvent.objects.filter(is_active=True).exclude(created_by=request.user)
+        else:
+            # যদি ইউজার অ্যানোনিমাস হয়, exclude প্রয়োগ না করে শুধু is_active=True ফিল্টার করবে
+            recipient_requests = DonationEvent.objects.filter(is_active=True)
 
-        recipient_requests = DonationEvent.objects.filter(is_active=True).exclude(created_by=request.user)
-        print(recipient_requests)
+        # রেসপন্সে ইভেন্টগুলো পাঠানোর জন্য সিরিয়ালাইজার ব্যবহার করুন
         serializer = DonationEventSerializer(recipient_requests, many=True)
         return Response({'recipient_requests': serializer.data})
 
