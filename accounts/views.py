@@ -55,7 +55,7 @@ def activate(request, uid, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return redirect("http://127.0.0.1:5500/login.html")
+        return redirect("https://salauddin85.github.io/Blood_Bank_Frontend/login.html")
     else:
         return Response({'error':"activation_failed"})  # Add a template or view to handle activation failure
 
@@ -110,7 +110,7 @@ class UserLogoutView(APIView):
 # IMAGEBB_API_KEY = 'ca0a7f8e97446e4139d17010b039c2da'
    
 class DonorProfileView(viewsets.ModelViewSet):
-    queryset=DonorProfile
+    # queryset=DonorProfile
     serializer_class = DonorProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 

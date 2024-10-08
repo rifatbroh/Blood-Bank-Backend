@@ -116,6 +116,8 @@ class BlogPostViewSet(viewsets.ModelViewSet):
 
 
 class FeedbackViewSet(viewsets.ModelViewSet):
+    # queryset = Feedback.objects.all()
+
     serializer_class = FeedbackSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 

@@ -192,7 +192,8 @@ class DonationEventViewSet(viewsets.ModelViewSet):
 # Viewset for DonationHistory
 class DonationHistoryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DonationHistorySerializer
-     # permission_classes = [IsAuthenticated]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
+
     
     def get_queryset(self):
         # Only show the current user's donation history
@@ -236,6 +237,8 @@ class DashboardViewSet(viewsets.ModelViewSet):
     queryset = DonationEvent.objects.all()  # Default queryset
     serializer_class = DonationEventSerializer
     pagination_class=DonationEventPagination
+    permission_classes=[IsAuthenticatedOrReadOnly]
+
 
 
     # Custom action for recipient requests
