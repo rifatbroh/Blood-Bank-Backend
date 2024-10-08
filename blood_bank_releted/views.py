@@ -31,14 +31,10 @@ class ContactViewSet(viewsets.ModelViewSet):
    # Only allow POST requests
 
 
-
-IMAGEBB_API_URL = 'https://api.imgbb.com/1/upload'  # ImageBB API URL
-IMAGEBB_API_KEY = 'ca0a7f8e97446e4139d17010b039c2da'  # আপনার ImageBB API কী এখানে বসান
-
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = DonorBlogPost.objects.all()
     serializer_class = BlogPostSerializer
-    pagination_class=DonationEventPagination
+    pagination_class = DonationEventPagination
 
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -46,47 +42,77 @@ class BlogPostViewSet(viewsets.ModelViewSet):
         user = self.request.user
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content')
-        image = self.request.FILES.get('image')  # ইমেজ ফাইলটি নিন
+        image = self.request.FILES.get('image')  # Image field থেকে ফাইল নিন
 
         # Check if title and content are empty
         if not title or not content:
             raise ValidationError({"detail": "Title and content must be provided."})
 
-        # ইমেজ আপলোড করার জন্য ImageBB API কল করুন
-        if image:
-            try:
-                # ইমেজ আপলোড করতে API কল করুন
-                response = requests.post(
-                    IMAGEBB_API_URL,
-                    files={
-                        'image': image  # এখানে ইমেজ ফাইল পাঠান
-                    },
-                    data={
-                        'key': IMAGEBB_API_KEY
-                    },
-                    timeout=30  # 30 সেকেন্ডের টাইমআউট
-                )
-
-                # API থেকে প্রাপ্ত উত্তর চেক করুন
-                if response.status_code == 200:
-                    image_url = response.json()['data']['url']  # ইমেজের URL পান
-                else:
-                    print(response.json())  # লগ করে দেখুন কি ভুল হচ্ছে
-                    raise ValidationError({"detail": "Image upload failed."})
-            except requests.exceptions.Timeout:
-                raise ValidationError({"detail": "Image upload timed out."})
-            except requests.exceptions.RequestException as e:
-                raise ValidationError({"detail": f"An error occurred: {str(e)}"})
-        else:
-            raise ValidationError({"detail": "Image must be provided."})
-
-        # ব্লগ পোস্ট তৈরি করুন
-        serializer.save(author=user, image=image_url)  # ইমেজ URL সহ ব্লগ পোস্ট সেভ করুন
+        # ব্লগ পোস্ট তৈরি করুন এবং সেভ করুন
+        serializer.save(author=user, image=image)  # লোকালি ইমেজ সেভ হবে
 
         return Response(
-            {"detail": "Blog post created successfully!", "image_url": image_url},
+            {"detail": "Blog post created successfully!"},
             status=status.HTTP_201_CREATED
         )
+
+
+# IMAGEBB_API_URL = 'https://api.imgbb.com/1/upload'  # ImageBB API URL
+# IMAGEBB_API_KEY = 'ca0a7f8e97446e4139d17010b039c2da'  # আপনার ImageBB API কী এখানে বসান
+
+# class BlogPostViewSet(viewsets.ModelViewSet):
+#     queryset = DonorBlogPost.objects.all()
+#     serializer_class = BlogPostSerializer
+#     pagination_class=DonationEventPagination
+
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+#     def perform_create(self, serializer):
+#         user = self.request.user
+#         title = serializer.validated_data.get('title')
+#         content = serializer.validated_data.get('content')
+#         image = self.request.FILES.get('image')  # ইমেজ ফাইলটি নিন
+
+#         # Check if title and content are empty
+#         if not title or not content:
+#             raise ValidationError({"detail": "Title and content must be provided."})
+
+#         # ইমেজ আপলোড করার জন্য ImageBB API কল করুন
+#         if image:
+#             try:
+#                 # ইমেজ আপলোড করতে API কল করুন
+#                 response = requests.post(
+#                     IMAGEBB_API_URL,
+#                     files={
+#                         'image': image  # এখানে ইমেজ ফাইল পাঠান
+#                     },
+#                     data={
+#                         'key': IMAGEBB_API_KEY
+#                     },
+#                     timeout=30  # 30 সেকেন্ডের টাইমআউট
+#                 )
+
+#                 # API থেকে প্রাপ্ত উত্তর চেক করুন
+#                 if response.status_code == 200:
+#                     image_url = response.json()['data']['url']  # ইমেজের URL পান
+#                     print(image_url)
+#                 else:
+#                     print(response.json())  # লগ করে দেখুন কি ভুল হচ্ছে
+#                     raise ValidationError({"detail": "Image upload failed."})
+#             except requests.exceptions.Timeout:
+#                 raise ValidationError({"detail": "Image upload timed out."})
+#             except requests.exceptions.RequestException as e:
+#                 raise ValidationError({"detail": f"An error occurred: {str(e)}"})
+#         else:
+#             raise ValidationError({"detail": "Image must be provided."})
+
+#         # ব্লগ পোস্ট তৈরি করুন
+#         serializer.save(author=user, image=image_url)  # ইমেজ URL সহ ব্লগ পোস্ট সেভ করুন
+
+#         return Response(
+#             {"detail": "Blog post created successfully!", "image_url": image_url},
+#             status=status.HTTP_201_CREATED
+#         )
 
 
 class FeedbackViewSet(viewsets.ModelViewSet):
