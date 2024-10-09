@@ -157,19 +157,22 @@ class All_Feddback(viewsets.ModelViewSet):
         serializer=FeedbackSerializer(feedback,many=True)
         return Response({'all_feedback':serializer.data})
 
-
-
 class SubscriptionViewSet(viewsets.ModelViewSet):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        user=self.request.user
+        user = self.request.user
         # Directly create subscription for the logged-in user
-        subcription=Subscription.objects.filter(user=user).exists()
-        if subcription:
+        subscription = Subscription.objects.filter(user=user).exists()
+        if subscription:
             raise ValidationError("Your Subscription already exists")
-
-        serializer.save(user=self.request.user)
+        
+        # Checking serializer validity
+        if not serializer.is_valid():
+            print(serializer.errors)  # ফিল্ড ত্রুটি গুলো লোগে দেখুন
+            raise ValidationError(serializer.errors)
+        
+        serializer.save(user=self.request.user)  # Automatically assigning the user
         return Response({"detail": "Thank you! for Subscription us"}, status=status.HTTP_201_CREATED)
