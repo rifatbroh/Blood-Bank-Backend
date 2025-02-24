@@ -1,23 +1,23 @@
-
 Authentication:
----------------
-Registraion: http://127.0.0.1:8000/accounts/register/
-login: http://127.0.0.1:8000/accounts/login/
-logout: http://127.0.0.1:8000/accounts/logout/
-profile: http://127.0.0.1:8000/accounts/profile/  
 
-Donation Releted APi:
---------------------
-"notifications": "http://127.0.0.1:8000/events/notifications/"
-"donation-events": "http://127.0.0.1:8000/events/donation-events/"
-"donation-history": "http://127.0.0.1:8000/events/donation-history/"
-"dashboard": "http://127.0.0.1:8000/events/dashboard/"
-"recipient_requests": "http://127.0.0.1:8000/events/dashboard/recipient_requests/"
-"donation_history": "http://127.0.0.1:8000/events/dashboard/donation_history/"
-"event filter by blood group": http://127.0.0.1:8000/events/donation-event-filter/?blood_group=A%2B
+Registration: https://blood-bank-backend-orsm.onrender.com/accounts/register/
+Login: https://blood-bank-backend-orsm.onrender.com/accounts/login/
+Logout: https://blood-bank-backend-orsm.onrender.com/accounts/logout/
+Profile: https://blood-bank-backend-orsm.onrender.com/accounts/profile/
 
-Blood Bank Releted APi:
-"about-us": "http://127.0.0.1:8000/blood_bank_releted/about-us/"
-"contact": "http://127.0.0.1:8000/blood_bank_releted/contact/"
-"blog": "http://127.0.0.1:8000/blood_bank_releted/blog/"
-"feedback": "http://127.0.0.1:8000/blood_bank_releted/feedback/"
+Donation Related API:
+
+Notifications: https://blood-bank-backend-orsm.onrender.com/events/notifications/
+Donation Events: https://blood-bank-backend-orsm.onrender.com/events/donation-events/
+Donation History: https://blood-bank-backend-orsm.onrender.com/events/donation-history/
+Dashboard: https://blood-bank-backend-orsm.onrender.com/events/dashboard/
+Recipient Requests: https://blood-bank-backend-orsm.onrender.com/events/dashboard/recipient_requests/
+Donation History (Dashboard): https://blood-bank-backend-orsm.onrender.com/events/dashboard/donation_history/
+Event Filter by Blood Group (A+): https://blood-bank-backend-orsm.onrender.com/events/donation-event-filter/?blood_group=A%2B
+
+Blood Bank Related API:
+
+About Us: https://blood-bank-backend-orsm.onrender.com/blood_bank_releted/about-us/
+Contact: https://blood-bank-backend-orsm.onrender.com/blood_bank_releted/contact/
+Blog: https://blood-bank-backend-orsm.onrender.com/blood_bank_releted/blog/
+Feedback: https://blood-bank-backend-orsm.onrender.com/blood_bank_releted/feedback/
